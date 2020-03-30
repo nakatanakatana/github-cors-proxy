@@ -1,0 +1,56 @@
+## Dynamic configuration
+http:
+  routers:
+    github:
+      rule: "PathPrefix(`/github.com/`)"
+      middlewares:
+      - stripPrefixGitHub
+      - cors
+      service: github
+      entryPoints:
+      - proxy
+  services:
+    github:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+        - url: https://github.com/
+  middlewares:
+    stripPrefixGitHub:
+      stripPrefix:
+        prefixes:
+        - /github.com
+    cors:
+      headers:
+        customRequestHeaders:
+          User-Agent: "git/cors-proxy"
+        frameDeny: false
+        sslRedirect: false
+        accessControlAllowHeaders:
+        - accept-encoding
+        - accept-language
+        - accept
+        - access-control-allow-origin
+        - authorization
+        - cache-control
+        - connection
+        - content-length
+        - content-type
+        - dnt
+        - pragma
+        - range
+        - referer
+        - user-agent
+        - x-authorization
+        - x-http-method-override
+        - x-requested-with
+        accessControlAllowMethods:
+        - GET
+        - OPTIONS
+        - PUT
+        - POST
+        accessControlAllowOrigin: "origin-list-or-null"
+        accessControlAllowOriginList:
+        - https://isomorphic-git.org
+        accessControlMaxAge: 100
+        addVaryHeader: true

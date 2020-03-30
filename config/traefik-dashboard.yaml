@@ -1,0 +1,19 @@
+## Dynamic configuration
+### for traefik dashboard
+http:
+  routers:
+    dashboard:
+      rule: "PathPrefix(`/api`) || PathPrefix(`/dashboard`) || PathPrefix(`/metrics`)"
+      middlewares:
+      - dashboardBasicAuth
+      service: dashboard
+  services:
+    dashboard:
+      loadBalancer:
+        servers:
+        - url: http://localhost:8080/
+  middlewares:
+    dashboardBasicAuth:
+      basicAuth:
+        users:
+          - "tanaka:$apr1$LLnydszr$zA41342.Sm3jt4IqWk.8q/"

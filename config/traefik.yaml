@@ -1,0 +1,20 @@
+## Static configuration
+api:
+  debug: true
+  dashboard: true
+  insecure: true
+
+
+entryPoints:
+  proxy:
+    address: ":8888"
+
+accessLog: {}
+
+metrics:
+  prometheus: {}
+
+providers:
+  file:
+    # directory: "./"
+    directory: "/traefik/"
